@@ -1,0 +1,64 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: "flx-integrator"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  profiles:
+    include: null
+  datasource:
+    url: "jdbc:h2:mem:testdb"
+    driverClassName: "org.h2.Driver"
+    username: "sa"
+    password: ""
+  jpa:
+    databasePlatform: "org.hibernate.dialect.H2Dialect"
+    hibernate:
+      ddl-auto: "update"
+    show-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "**"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
+adapter:
+  restconsumer:
+    timeout: 5000
+    url: "http://localhost:8081/customercrm/"
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+  retry:
+    configs:
+      default:
+          maxAttempts: 3
+          waitDuration: 500
+          ignoreExceptions:
+            - com.suario.flx_integrator.exceptions.ResourceNotFoundException
+      metrics:
+        enabled: true
