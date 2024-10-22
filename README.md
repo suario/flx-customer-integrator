@@ -13,19 +13,8 @@ Repositories and webclients are connected to the business logic by using the Ada
 
 ![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
 
-## Validations
-* All the fields are required
-* Fields firstName, lastName and city can contain letters and spaces
-* street field can contain alphanumeric characters and spaces
-* zipCode admits only numbers
-* state is a two character word with only valid USA states (ex. IL, FL)
 
-## Assumptions
-* By default, both applications are synchronized
-
-## Solution
-
-For the solution of the problem, I have created two services:
+There are two services:
 * flx-integrator: Integrator
 * flx-crm-service: Service that emulates the CRM
 
@@ -33,10 +22,28 @@ For the integrator the database structure goes like this:
 
 ![image](https://github.com/user-attachments/assets/0aa1e0df-76fc-43f7-a4c5-da15c05d4eef)
 
-And for the CRM the database contains a single table that look like this:
+And for the CRM, the database contains a single table that look like this:
 
 ![image](https://github.com/user-attachments/assets/4f5e0d9a-8651-4928-a68d-555d105094d3)
 
+Each service uses a different in-memory database.
+
+## Assumptions
+* All the fields are required
+* Fields firstName, lastName and city can contain letters and spaces
+* street field can contain alphanumeric characters and spaces
+* zipCode admits only numbers
+* state is a two character word with only valid USA states (ex. IL, FL)
+
+## Solution
+
+flx-integrator is encharge of calling the CRM, the web client is always called before saving the data, so since data consistency is required, whenever the call to the CRM fails for whatever reason, an exception is thrown and the flow of actions is broken, meaning the data won't be stored locally either.
+
+![image](https://github.com/user-attachments/assets/e8b6dcd3-97f8-4394-b46f-52d56358d06a)
+
+An error response is returned by the system.
+
+![image](https://github.com/user-attachments/assets/93ff62a0-14ad-465b-ac69-291a24af5b53)
 
 
 ### Retry Strategy
@@ -45,7 +52,7 @@ The retry strategy was implemented by using **resilience4j** with the following 
 
 ![image](https://github.com/user-attachments/assets/6250672c-0119-4e5a-948e-a8dd5f0dccc4)
 
-As the reader can see, the exception with name ResourceNotFoundException is excluded from the retry configuration, this exception is used to map the 404 HTTP status in the reactive chain of the client (see picture below). This is because a 404 is a valid status that is exposed by the CRM when a resource is not found. In a brief, when a 404 status is obtained from the CRM, no retry strategy will be triggered.
+As the reader can see, the exception with name ResourceNotFoundException is excluded from the retry configuration, this exception is used to map the 404 HTTP status in the reactive chain of the client (see picture below). This is because a 404 is a valid status that is exposed by the CRM when a resource is not found. In summary, when a 404 status is obtained from the CRM, no retry strategy will be triggered.
 
 For the REST client, each method has been marked with the @Retry annotation with a fallback method to throw a proper exception.
 
@@ -58,7 +65,7 @@ After stopping the CRM service to emulate a faulty service and calling the CREAT
 
 ### Error Handling
 
-When a validation issue happens a business exception is thrown an broadcasted
+When a validation issue happens a business exception is thrown
 
 ![image](https://github.com/user-attachments/assets/10da5d4b-a121-40ac-9be1-f6d3d9618a67)
 
@@ -66,6 +73,8 @@ The exception is then caught by an exception handler has shown below
 
 ![image](https://github.com/user-attachments/assets/00c1aa86-0294-4f46-a3b7-326f17b90a81)
 
+All fields are validated
+![image](https://github.com/user-attachments/assets/5fdf91e0-c450-4faa-bb4c-1afc6b78b1f2)
 
 
 ## Run
