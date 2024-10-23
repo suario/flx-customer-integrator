@@ -1,5 +1,30 @@
 # Assessment Task
 
+# New Features
+
+New additions were added after the deadline, if the reviewer wants to test them, he/she can do so by checking out the **v2** branch from the repository, otherwise, keep reading from the **Requirements** section :
+
+https://github.com/suario/flx-customer-integrator/tree/v2
+
+Change Log:
+* Complete business logic
+* Improved mappers
+* Added a separate **id** to differentiate the local auto-increment id from the tracked customer ID.
+* Added mechanism to force failure based on a percentage.
+
+**failureRate** is a new property added to **flx-crm-service** with the intention of mimicking the intermittent failure behavior that can happen in a real system. 
+
+A value of 0 means 0% of failed responses, a value of 100 means 100% of failed responses from the CRM. By default the value is 30.
+
+This was done to test the retry mechanism without stopping the CRM.
+
+![image](https://github.com/user-attachments/assets/f4cf9572-c285-4cea-9910-1f3d13db9efd)
+
+
+
+
+
+
 ## Requirements
 * Java 17
 
@@ -94,6 +119,7 @@ All fields are validated
 
 * Swagger Documentation added
 * Tests added
+
 
 
 
