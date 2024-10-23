@@ -31,6 +31,9 @@ public class CustomerData implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = DbNames.CustomerConst.ID, nullable = false)
+	private Long id;
+
 	@Column(name = DbNames.CustomerConst.CUSTOMER_ID, nullable = false)
 	private Long customerId;
 

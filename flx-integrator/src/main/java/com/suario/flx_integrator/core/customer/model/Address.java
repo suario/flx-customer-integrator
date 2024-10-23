@@ -23,9 +23,4 @@ public class Address {
 	private String state;
 
 	private String zipCode;
-
-	@Override
-	public String toString() {
-		return "Address[" + id + "]";
-	}
 }

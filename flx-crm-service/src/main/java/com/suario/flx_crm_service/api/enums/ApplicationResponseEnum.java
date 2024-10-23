@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 public enum ApplicationResponseEnum {
 	APPLICATION_BAD_REQUEST(400, "Bad request", HttpStatus.BAD_REQUEST), APPLICATION_RESOURCE_NOT_FOUND(404,
 			"Not found", HttpStatus.NOT_FOUND), APPLICATION_SERVER_ERROR(500, "Internal Server Error",
-					HttpStatus.INTERNAL_SERVER_ERROR);
+					HttpStatus.INTERNAL_SERVER_ERROR), APPLICATION_FORCED_FAILURE(999, "Forced failure",
+							HttpStatus.INTERNAL_SERVER_ERROR);
 
 	private final int code;
 	private final String message;

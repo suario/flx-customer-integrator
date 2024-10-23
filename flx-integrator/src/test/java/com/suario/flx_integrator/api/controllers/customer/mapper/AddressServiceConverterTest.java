@@ -30,10 +30,10 @@ public class AddressServiceConverterTest {
 	void toResponseTest() {
 		Address object = new Address();
 		object.setId(123L);
-		object.setStreet("string_test1");
-		object.setCity("string_test2");
-		object.setState("string_test3");
-		object.setZipCode("string_t");
+		object.setStreet("Street");
+		object.setCity("Miami");
+		object.setState("Florida");
+		object.setZipCode("12356");
 
 		AddressResponse entity = converter.toResponse(object);
 
@@ -53,10 +53,10 @@ public class AddressServiceConverterTest {
 	@Test
 	void toEntityTest() {
 		AddressRequest request = new AddressRequest();
-		request.setStreet("string_test1");
-		request.setCity("string_test2");
-		request.setState("string_test3");
-		request.setZipCode("string_t");
+		request.setStreet("Street");
+		request.setCity("Miami");
+		request.setState("Florida");
+		request.setZipCode("12356");
 
 		Address object = converter.toModel(request);
 

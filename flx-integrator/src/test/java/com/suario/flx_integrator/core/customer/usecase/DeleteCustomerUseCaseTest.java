@@ -3,10 +3,12 @@ package com.suario.flx_integrator.core.customer.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+import com.suario.flx_integrator.core.customer.model.Customer;
 import com.suario.flx_integrator.core.customer.model.gateways.CustomerRepository;
 import com.suario.flx_integrator.core.customercrm.model.gateways.CustomerCrmClient;
+import com.suario.flx_integrator.exceptions.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -31,12 +33,13 @@ public class DeleteCustomerUseCaseTest {
 
 	@Test
 	void deleteByIdTest() {
+		when(repository.findById(1L)).thenReturn(new Customer());
 		assertDoesNotThrow(() -> useCase.deleteById(1L));
 	}
 
 	@Test
-	void deleteByIdWhenTheInputIsNullTest() {
-		doThrow(IllegalArgumentException.class).when(repository).deleteById(null);
-		assertThrows(IllegalArgumentException.class, () -> useCase.deleteById(null));
+	void throwsExceptionWhenIdIsNotFound() {
+		when(repository.findById(1L)).thenReturn(null);
+		assertThrows(BusinessException.class, () -> useCase.deleteById(null));
 	}
 }

@@ -14,9 +14,11 @@ public interface CustomerServiceConverter extends ServiceConverter<Customer, Cus
 
 	CustomerServiceConverter MAPPER = Mappers.getMapper(CustomerServiceConverter.class);
 
+	@Mapping(target = "customerId", source = "id")
 	@Override
 	CustomerResponse toResponse(Customer model);
 
+	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "customerId", ignore = true)
 	@Override
 	Customer toModel(CustomerRequest request);

@@ -31,18 +31,18 @@ public class CustomerServiceConverterTest {
 	@Test
 	void toResponseTest() {
 		Customer object = new Customer();
+		object.setId(456L);
 		object.setCustomerId(123L);
-		object.setFirstName("string_test1");
-		object.setLastName("string_test2");
-		object.setEmail("string_test3");
-		object.setPhoneNumber("string_tes");
+		object.setFirstName("Juan");
+		object.setLastName("Smith");
+		object.setEmail("email@email.com");
+		object.setPhoneNumber("1234567890");
 		object.setAddress(Address.builder().id(123L).build());
 
 		CustomerResponse entity = converter.toResponse(object);
 
 		assertAll(() -> assertNotNull(entity.getCustomerId()),
-				() -> assertEquals(object.getCustomerId(), entity.getCustomerId()),
-				() -> assertNotNull(entity.getFirstName()),
+				() -> assertEquals(object.getId(), entity.getCustomerId()), () -> assertNotNull(entity.getFirstName()),
 				() -> assertEquals(object.getFirstName(), entity.getFirstName()),
 				() -> assertNotNull(entity.getLastName()),
 				() -> assertEquals(object.getLastName(), entity.getLastName()), () -> assertNotNull(entity.getEmail()),
@@ -59,10 +59,10 @@ public class CustomerServiceConverterTest {
 	@Test
 	void toEntityTest() {
 		CustomerRequest request = new CustomerRequest();
-		request.setFirstName("string_test1");
-		request.setLastName("string_test2");
-		request.setEmail("string_test3");
-		request.setPhoneNumber("string_tes");
+		request.setFirstName("Juan");
+		request.setLastName("Smith");
+		request.setEmail("email@email.com");
+		request.setPhoneNumber("1234567890");
 		request.setAddress(new AddressRequest());
 
 		Customer object = converter.toModel(request);

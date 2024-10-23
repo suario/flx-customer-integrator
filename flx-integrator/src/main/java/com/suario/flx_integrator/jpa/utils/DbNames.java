@@ -19,6 +19,7 @@ public class DbNames {
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class CustomerConst {
 		public static final String TABLE_NAME = "customer";
+		public static final String ID = "id";
 		public static final String CUSTOMER_ID = "customer_id";
 		public static final String FIRST_NAME = "first_name";
 		public static final String LAST_NAME = "last_name";
